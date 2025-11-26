@@ -13,6 +13,7 @@ from judo.optimizers.overrides import (
     set_default_leap_cube_down_overrides,
     set_default_leap_cube_overrides,
 )
+from judo.optimizers.icem import ICEM, ICEMConfig
 from judo.optimizers.ps import PredictiveSampling, PredictiveSamplingConfig
 
 set_default_caltech_leap_cube_overrides()
@@ -25,6 +26,7 @@ set_default_leap_cube_down_overrides()
 
 _registered_optimizers: dict[str, tuple[Type[Optimizer], Type[OptimizerConfig]]] = {
     "cem": (CrossEntropyMethod, CrossEntropyMethodConfig),
+    "icem": (ICEM, ICEMConfig),
     "mppi": (MPPI, MPPIConfig),
     "ps": (PredictiveSampling, PredictiveSamplingConfig),
 }
@@ -53,6 +55,8 @@ __all__ = [
     "MPPIConfig",
     "Optimizer",
     "OptimizerConfig",
+    "ICEM",
+    "ICEMConfig",
     "PredictiveSampling",
     "PredictiveSamplingConfig",
 ]

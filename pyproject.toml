@@ -29,6 +29,7 @@ classifiers = [
 ]
 
 dependencies = [
+    "colorednoise",
     "dora-utils",  # dora + qol utils for writing nodes
     "mujoco",
     "numpy",
