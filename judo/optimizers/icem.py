@@ -27,6 +27,7 @@ class ICEMConfig(OptimizerConfig):
     keep_previous_elites: bool = True
     shift_elites_over_time: bool = True
     fraction_elites_reused: float = 0.3
+    shift_std_over_time: bool = False
     noise_beta: float = 1.0  # 0 for white noise, 1 for pink noise, 2 for brown noise
 
 

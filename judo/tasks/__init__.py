@@ -9,6 +9,7 @@ from judo.tasks.cylinder_push import CylinderPush, CylinderPushConfig
 from judo.tasks.fr3_pick import FR3Pick, FR3PickConfig
 from judo.tasks.leap_cube import LeapCube, LeapCubeConfig
 from judo.tasks.leap_cube_down import LeapCubeDown, LeapCubeDownConfig
+from judo.tasks.so101_reach import SO101Reach, SO101ReachConfig
 
 _registered_tasks: Dict[str, Tuple[Type[Task], Type[TaskConfig]]] = {
     CylinderPush.name: (CylinderPush, CylinderPushConfig),
@@ -17,6 +18,7 @@ _registered_tasks: Dict[str, Tuple[Type[Task], Type[TaskConfig]]] = {
     LeapCube.name: (LeapCube, LeapCubeConfig),
     LeapCubeDown.name: (LeapCubeDown, LeapCubeDownConfig),
     CaltechLeapCube.name: (CaltechLeapCube, CaltechLeapCubeConfig),
+    SO101Reach.name: (SO101Reach, SO101ReachConfig),
 }
 
 
@@ -47,4 +49,6 @@ __all__ = [
     "LeapCubeConfig",
     "LeapCubeDown",
     "LeapCubeDownConfig",
+    "SO101Reach",
+    "SO101ReachConfig",
 ]

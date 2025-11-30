@@ -1,4 +1,4 @@
-task: cylinder_push
+task: so101_reach
 optimizer: cem
 
 dataflow:
