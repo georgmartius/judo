@@ -22,17 +22,7 @@ class SO101ReachConfig(TaskConfig):
     """Reward configuration for the SO101 reaching task."""
 
     w_ee_position: float = 1.0
-    w_ee_velocity: float = 0.01
-    target_pos: np.ndarray = np_1d_field(
-        np.array([0.2, 0.0, 0.2]),
-        names=["x", "y", "z"],
-        mins=[-0.3, -0.3, 0.05],
-        maxs=[0.3, 0.3, 0.4],
-        steps=[0.01, 0.01, 0.01],
-        vis_name="target_position",
-        xyz_vis_indices=[0, 1, 2],
-        xyz_vis_defaults=[0.0, 0.0, 0.0],
-    )
+    w_ee_velocity: float = 0.00
 
 
 class SO101Reach(Task[SO101ReachConfig]):
@@ -69,7 +59,7 @@ class SO101Reach(Task[SO101ReachConfig]):
             0.0,  # wrist_roll
             0.0,  # gripper
         ])
-        
+  
         self.reset()
 
     def reward(
@@ -105,13 +95,14 @@ class SO101Reach(Task[SO101ReachConfig]):
         arm_vel = states[..., self.arm_vel_slice]  # (num_rollouts, T, 5)
         
         # Target position
-        target_pos = self.config.target_pos  # (3,)
+        target_pos = self.target_pos  # (3,)
         
         # Position error
         ee_to_target = ee_pos - target_pos  # (num_rollouts, T, 3)
         position_cost = quadratic_norm(ee_to_target)  # (num_rollouts, T)
         position_reward = -self.config.w_ee_position * position_cost.sum(-1)  # (num_rollouts,)
-        
+        print("Reward: ", position_cost[0,0], "EE pos: ", ee_pos[0,0], "Target pos: ", target_pos)
+
         # Velocity penalty
         velocity_cost = quadratic_norm(arm_vel)  # (num_rollouts, T)
         velocity_reward = -self.config.w_ee_velocity * velocity_cost.sum(-1)  # (num_rollouts,)
@@ -129,13 +120,14 @@ class SO101Reach(Task[SO101ReachConfig]):
         
         # Randomize target position
         self._randomize_target()
+        print("Target pos: ", self.target_pos)
         
         mujoco.mj_forward(self.model, self.data)
     
     def _randomize_target(self) -> None:
         """Randomizes the target position within the workspace."""
         # Define workspace bounds (reachable space for SO101)
-        x_range = (-0.25, 0.25)
+        x_range = (0.05, 0.25)
         y_range = (-0.25, 0.25)
         z_range = (0.05, 0.35)
         
@@ -149,8 +141,9 @@ class SO101Reach(Task[SO101ReachConfig]):
         # Update the mocap body position for visualization
         self.data.mocap_pos[0] = target_pos
         
-        # Update the config (this will be used in the reward function)
-        self.config.target_pos[:] = target_pos
+        # Store the target position (this will be used in the reward function)
+        self.target_pos = target_pos
+        print(self.target_pos)
     
     def post_sim_step(self) -> None:
         """Checks if the target is reached and randomizes a new target if so."""
@@ -158,11 +151,13 @@ class SO101Reach(Task[SO101ReachConfig]):
         ee_pos = self.data.sensordata[self.ee_pos_adr : self.ee_pos_adr + 3]
         
         # Check if target is reached (within 3cm)
-        distance = np.linalg.norm(ee_pos - self.config.target_pos)
-        if distance < 0.03:
+        distance = np.linalg.norm(ee_pos - self.target_pos)
+        if int(self.data.time*100) % 100 == 0:
+            print("END: ", distance,  "EE pos: ", ee_pos, "Target pos: ", self.target_pos)
+        if distance < 0.05:
             self._randomize_target()
             mujoco.mj_forward(self.model, self.data)
     
     def get_sim_metadata(self) -> dict[str, Any]:
         """Returns the simulation's target position."""
-        return {"target_pos": self.config.target_pos.copy()}
+        return {"target_pos": self.target_pos.copy()}
