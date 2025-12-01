@@ -132,23 +132,23 @@
       </body>
     </body>
   
-    <body name="bottle_0" pos="0.11464922470318817 -0.015034681184885934 0.8500000000000001" quat="-0.880423004941339 0.0 0.0 0.47418913143392805">
-      <freejoint/>
-      <include file="objects/bottle.xml"/>
-    </body>
-    <body name="milk_1" pos="0.03260713314203245 0.22769135736118978 0.8500000000000001" quat="0.8815365135726216 0.0 0.0 0.4721158493825716">
-      <freejoint/>
-      <include file="objects/milk.xml"/>
-    </body>
-    <body name="lemon_2" pos="0.05702896593819273 -0.15019339593447523 0.8500000000000001" quat="-0.04823582175404855 0.0 0.0 0.9988359752730733">
-      <freejoint/>
-      <include file="objects/lemon.xml"/>
-    </body>
-    <body name="cereal_3" pos="0.1040320331625747 0.08958612417924516 0.8500000000000001" quat="-0.31009617187261945 0.0 0.0 0.9507051931013877">
+    <body name="cereal_0" pos="-0.23162634579129754 -0.08443058180896484 0.8500000000000001" quat="-0.006795217939072391 0.0 0.0 0.9999769122400579">
       <freejoint/>
       <include file="objects/cereal.xml"/>
     </body>
-    <body name="goal_marker" pos="0.24186887085698477 0.01771921408379773 0.8500000000000001" mocap="true">
+    <body name="bread_1" pos="0.03897869480727045 0.21306233426883475 0.8500000000000001" quat="0.7728431461021221 0.0 0.0 0.6345970938500853">
+      <freejoint/>
+      <include file="objects/bread.xml"/>
+    </body>
+    <body name="can_2" pos="0.08610580270124807 0.05882322454573308 0.8500000000000001" quat="-0.9819561441022759 0.0 0.0 0.18910878102243214">
+      <freejoint/>
+      <include file="objects/can.xml"/>
+    </body>
+    <body name="milk_3" pos="0.18885262138948677 0.060821363072461554 0.8500000000000001" quat="-0.5084925502720817 0.0 0.0 0.8610663890303665">
+      <freejoint/>
+      <include file="objects/milk.xml"/>
+    </body>
+    <body name="goal_marker" pos="-0.14863825527041896 0.2354512299877069 0.8500000000000001" mocap="true">
       <geom name="goal_sphere" type="sphere" size="0.02" rgba="0 1 0 0.3" contype="0" conaffinity="0"/>
     </body>
   </worldbody>
