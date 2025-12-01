@@ -188,3 +188,6 @@ outputs/
 MUJOCO_LOG.TXT
 
 # assets
+
+# generated files
+*_generated.xml 
