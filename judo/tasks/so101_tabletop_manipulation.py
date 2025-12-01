@@ -44,9 +44,6 @@ class SO101TabletopManipulationConfig(TaskConfig):
     w_object_position: float = 1.0  # Weight for object-to-goal distance
     w_ee_velocity: float = 0.01  # Weight for end-effector velocity penalty
     num_objects: int = 3  # Number of objects to place on the table
-    table_bounds_x: tuple[float, float] = (-0.3, 0.3)  # Table X bounds
-    table_bounds_y: tuple[float, float] = (-0.3, 0.3)  # Table Y bounds
-    table_height: float = 0.8  # Height of the table top
     min_object_distance: float = 0.08  # Minimum distance between objects
 
 
@@ -90,6 +87,11 @@ class SO101TabletopManipulation(Task[SO101TabletopManipulationConfig]):
         else:
             self.config = config
         
+        self.table_bounds_x: tuple = (-0.3, 0.3)  # Table X bounds
+        self.table_bounds_y: tuple = (-0.3, 0.3)  # Table Y bounds
+        self.table_height: float = 0.8  # Height of the table top
+ 
+
         # First, create the scene with objects
         self.object_placements: list[ObjectPlacement] = []
         self.task_goal: TaskGoal | None = None
@@ -221,9 +223,9 @@ class SO101TabletopManipulation(Task[SO101TabletopManipulationConfig]):
             max_attempts = 50
             for _ in range(max_attempts):
                 # Random position on the table
-                x = np.random.uniform(*self.config.table_bounds_x)
-                y = np.random.uniform(*self.config.table_bounds_y)
-                z = self.config.table_height + 0.05  # Slightly above table surface
+                x = np.random.uniform(*self.table_bounds_x)
+                y = np.random.uniform(*self.table_bounds_y)
+                z = self.table_height + 0.05  # Slightly above table surface
                 
                 position = np.array([x, y, z])
                 
@@ -286,9 +288,9 @@ class SO101TabletopManipulation(Task[SO101TabletopManipulationConfig]):
         # Generate a random goal position on the table
         # Make sure it's different from the current position
         while True:
-            goal_x = np.random.uniform(*self.config.table_bounds_x)
-            goal_y = np.random.uniform(*self.config.table_bounds_y)
-            goal_z = self.config.table_height + 0.05
+            goal_x = np.random.uniform(*self.table_bounds_x)
+            goal_y = np.random.uniform(*self.table_bounds_y)
+            goal_z = self.table_height + 0.05
             
             goal_position = np.array([goal_x, goal_y, goal_z])
             

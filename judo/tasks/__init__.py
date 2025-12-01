@@ -23,7 +23,7 @@ _registered_tasks: Dict[str, Tuple[Type[Task], Type[TaskConfig]]] = {
     LeapCubeDown.name: (LeapCubeDown, LeapCubeDownConfig),
     CaltechLeapCube.name: (CaltechLeapCube, CaltechLeapCubeConfig),
     SO101Reach.name: (SO101Reach, SO101ReachConfig),
-    SO101TabletopManipulation.name: (SO101TabletopManipulation, SO101TabletopManipulationConfig),
+#     SO101TabletopManipulation.name: (SO101TabletopManipulation, SO101TabletopManipulationConfig),
 }
 
 
