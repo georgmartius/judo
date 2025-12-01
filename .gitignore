@@ -188,4 +188,3 @@ outputs/
 MUJOCO_LOG.TXT
 
 # assets
-*.obj
