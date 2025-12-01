@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "table_top_manipulation",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/so101_tabletop_manipulation_example.py",
+            "console": "integratedTerminal",
+            "args": ""
+        }
+    ]
+}
