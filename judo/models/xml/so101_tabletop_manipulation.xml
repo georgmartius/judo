@@ -65,6 +65,7 @@
   </asset>
   
   <worldbody>
+    <camera name="front" pos="0.9 0 1.4" mode="targetbody" target="base"/>
     <!-- SO101 Robot on table -->
     <body name="base" pos="0 0 0.8" quat="1 0 0 0" childclass="so101_new_calib">
       <inertial pos="0.0137179 -5.19711e-05 0.0334843" mass="0.147" fullinertia="0.000114686 0.000136117 0.000130364 -4.59787e-07 4.97151e-06 9.75275e-08"/>

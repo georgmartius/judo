@@ -87,9 +87,47 @@ def main():
     print(f"   - Number of object placements: {len(metadata['object_placements'])}")
     print(f"   - Has task goal: {metadata['task_goal'] is not None}")
     
-    print("\n" + "=" * 60)
+    print("=" * 60)
     print("Example completed successfully!")
     print("=" * 60)
+
+    print("\n8. Visualizing random actions...")
+    import time
+    import mujoco.viewer
+
+    # Reset the simulation
+    task.reset()
+
+    # Launch the viewer
+    print("Press ESC to exit the viewer.")
+    with mujoco.viewer.launch_passive(task.model, task.data) as viewer:
+        start_time = time.time()
+        target_ctrl = np.zeros(task.nu)
+        
+        while viewer.is_running():
+            step_start = time.time()
+
+            # Generate random control
+            # We use a simple random walk for smoother motion
+            if np.random.rand() < 0.1:
+                target_ctrl = np.random.uniform(
+                    task.actuator_ctrlrange[:, 0],
+                    task.actuator_ctrlrange[:, 1]
+                )
+                
+            current_ctrl = task.data.ctrl.copy()
+            task.data.ctrl[:] = current_ctrl + 0.1 * (target_ctrl - current_ctrl)
+
+            # Step the simulation
+            mujoco.mj_step(task.model, task.data)
+
+            # Sync the viewer
+            viewer.sync()
+
+            # Time keeping
+            time_until_next_step = task.dt - (time.time() - step_start)
+            if time_until_next_step > 0:
+                time.sleep(time_until_next_step)
 
 
 if __name__ == "__main__":
