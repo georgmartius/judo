@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <mujoco model="so101_tabletop_manipulation">
-  <compiler angle="radian" meshdir="../meshes/LeRobot-SO101" autolimits="true"/>
+  <compiler angle="radian" meshdir="../meshes" texturedir="../textures" autolimits="true"/>
   
   <include file="arenas/table_arena.xml"/>
   
@@ -31,19 +31,19 @@
   
   <asset>
     <!-- SO101 meshes -->
-    <mesh file="waveshare_mounting_plate_so101_v2.stl"/>
-    <mesh file="sts3215_03a_v1.stl"/>
-    <mesh file="motor_holder_so101_base_v1.stl"/>
-    <mesh file="wrist_roll_follower_so101_v1.stl"/>
-    <mesh file="moving_jaw_so101_v1.stl"/>
-    <mesh file="base_motor_holder_so101_v1.stl"/>
-    <mesh file="upper_arm_so101_v1.stl"/>
-    <mesh file="wrist_roll_pitch_so101_v2.stl"/>
-    <mesh file="under_arm_so101_v1.stl"/>
-    <mesh file="rotation_pitch_so101_v1.stl"/>
-    <mesh file="motor_holder_so101_wrist_v1.stl"/>
-    <mesh file="sts3215_03a_no_horn_v1.stl"/>
-    <mesh file="base_so101_v2.stl"/>
+    <mesh file="LeRobot-SO101/waveshare_mounting_plate_so101_v2.stl"/>
+    <mesh file="LeRobot-SO101/sts3215_03a_v1.stl"/>
+    <mesh file="LeRobot-SO101/motor_holder_so101_base_v1.stl"/>
+    <mesh file="LeRobot-SO101/wrist_roll_follower_so101_v1.stl"/>
+    <mesh file="LeRobot-SO101/moving_jaw_so101_v1.stl"/>
+    <mesh file="LeRobot-SO101/base_motor_holder_so101_v1.stl"/>
+    <mesh file="LeRobot-SO101/upper_arm_so101_v1.stl"/>
+    <mesh file="LeRobot-SO101/wrist_roll_pitch_so101_v2.stl"/>
+    <mesh file="LeRobot-SO101/under_arm_so101_v1.stl"/>
+    <mesh file="LeRobot-SO101/rotation_pitch_so101_v1.stl"/>
+    <mesh file="LeRobot-SO101/motor_holder_so101_wrist_v1.stl"/>
+    <mesh file="LeRobot-SO101/sts3215_03a_no_horn_v1.stl"/>
+    <mesh file="LeRobot-SO101/base_so101_v2.stl"/>
     <material name="base_motor_holder_so101_v1_material" rgba="1 0.82 0.12 1"/>
     <material name="base_so101_v2_material" rgba="1 0.82 0.12 1"/>
     <material name="sts3215_03a_v1_material" rgba="0.1 0.1 0.1 1"/>
@@ -60,6 +60,8 @@
     
     <!-- Goal visualization material -->
     <material name="goal_material" rgba="0 1 0 0.3"/>
+
+    <include file="objects/object-assets.xml"/>
   </asset>
   
   <worldbody>

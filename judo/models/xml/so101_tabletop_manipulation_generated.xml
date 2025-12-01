@@ -32,7 +32,7 @@
   <asset>
     <!-- SO101 meshes -->
     <mesh file="LeRobot-SO101/waveshare_mounting_plate_so101_v2.stl"/>
-    <mesh file="LeRobot-SO101/sts3215_03a_v1.stl"/> 
+    <mesh file="LeRobot-SO101/sts3215_03a_v1.stl"/>
     <mesh file="LeRobot-SO101/motor_holder_so101_base_v1.stl"/>
     <mesh file="LeRobot-SO101/wrist_roll_follower_so101_v1.stl"/>
     <mesh file="LeRobot-SO101/moving_jaw_so101_v1.stl"/>
@@ -60,10 +60,9 @@
     
     <!-- Goal visualization material -->
     <material name="goal_material" rgba="0 1 0 0.3"/>
-    
+
     <include file="objects/object-assets.xml"/>
   </asset>
-  
   
   <worldbody>
     <!-- SO101 Robot on table -->
@@ -133,9 +132,24 @@
       </body>
     </body>
   
-    <body name="bottle_2" pos="-0.017512712819265697 0.10185844414146661 0.8500000000000001" quat="0.9090282940569752 0.0 0.0 0.4167344005525168">
+    <body name="bottle_0" pos="0.11464922470318817 -0.015034681184885934 0.8500000000000001" quat="-0.880423004941339 0.0 0.0 0.47418913143392805">
       <freejoint/>
       <include file="objects/bottle.xml"/>
+    </body>
+    <body name="milk_1" pos="0.03260713314203245 0.22769135736118978 0.8500000000000001" quat="0.8815365135726216 0.0 0.0 0.4721158493825716">
+      <freejoint/>
+      <include file="objects/milk.xml"/>
+    </body>
+    <body name="lemon_2" pos="0.05702896593819273 -0.15019339593447523 0.8500000000000001" quat="-0.04823582175404855 0.0 0.0 0.9988359752730733">
+      <freejoint/>
+      <include file="objects/lemon.xml"/>
+    </body>
+    <body name="cereal_3" pos="0.1040320331625747 0.08958612417924516 0.8500000000000001" quat="-0.31009617187261945 0.0 0.0 0.9507051931013877">
+      <freejoint/>
+      <include file="objects/cereal.xml"/>
+    </body>
+    <body name="goal_marker" pos="0.24186887085698477 0.01771921408379773 0.8500000000000001" mocap="true">
+      <geom name="goal_sphere" type="sphere" size="0.02" rgba="0 1 0 0.3" contype="0" conaffinity="0"/>
     </body>
   </worldbody>
   

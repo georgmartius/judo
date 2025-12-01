@@ -1,6 +1,5 @@
-
     <body>
-      <body name="object">
+      <body name="bread-visual">
         <geom pos="0 0 0" mesh="bread_mesh" type="mesh" rgba="0.8 0.8 0.8 0.3"  conaffinity="0" contype="0"  group="1" mass="0.0001"/>
       </body>
       <site rgba="0 0 0 0" size="0.005" pos="0 0 -0.045" name="bottom_site"/>

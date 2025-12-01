@@ -14,7 +14,7 @@ from judo.tasks.base import Task, TaskConfig
 from judo.tasks.cost_functions import quadratic_norm
 
 XML_PATH = str(MODEL_PATH / "xml/so101_tabletop_manipulation.xml")
-OBJECTS_PATH = MODEL_PATH / "xml/objects"
+OBJECTS_PATH = Path("objects")
 
 
 @dataclass
@@ -95,11 +95,11 @@ class SO101TabletopManipulation(Task[SO101TabletopManipulationConfig]):
         self.task_goal: TaskGoal | None = None
         
         # Build the scene XML with objects
-        # scene_xml_path = self._build_scene_with_objects(model_path)
+        scene_xml_path = self._build_scene_with_objects(model_path)
         
         # Initialize the task with the generated scene
-       # super().__init__(model_path=scene_xml_path, sim_model_path=sim_model_path)
-        super().__init__(model_path=MODEL_PATH / "xml" / "so101_tabletop_manipulation_generated.xml", sim_model_path=sim_model_path)
+        super().__init__(model_path=scene_xml_path, sim_model_path=sim_model_path)
+        # super().__init__(model_path=MODEL_PATH / "xml" / "so101_tabletop_manipulation_generated.xml", sim_model_path=sim_model_path)
         
         # Get sensor index for end-effector position
         self.ee_pos_adr = self.get_sensor_start_index("ee_pos")
