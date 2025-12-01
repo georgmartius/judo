@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import mujoco
 import numpy as np
@@ -71,17 +71,35 @@ class SO101TabletopManipulation(Task[SO101TabletopManipulationConfig]):
         "milk",
     ]
 
-    def __init__(self, model_path: str = XML_PATH, sim_model_path: str | None = None) -> None:
-        """Initializes the SO101 tabletop manipulation task."""
+    def __init__(
+        self,
+        model_path: str = XML_PATH,
+        sim_model_path: str | None = None,
+        config: Optional[SO101TabletopManipulationConfig] = None,
+    ) -> None:
+        """Initializes the SO101 tabletop manipulation task.
+        
+        Args:
+            model_path: Path to the base model XML file (not used, scene is generated).
+            sim_model_path: Optional path to simulation model.
+            config: Optional task configuration. If None, uses default config.
+        """
+        # Initialize config first (before building scene)
+        if config is None:
+            self.config = self.config_t()
+        else:
+            self.config = config
+        
         # First, create the scene with objects
         self.object_placements: list[ObjectPlacement] = []
         self.task_goal: TaskGoal | None = None
         
         # Build the scene XML with objects
-        scene_xml_path = self._build_scene_with_objects()
+        # scene_xml_path = self._build_scene_with_objects(model_path)
         
         # Initialize the task with the generated scene
-        super().__init__(model_path=scene_xml_path, sim_model_path=sim_model_path)
+       # super().__init__(model_path=scene_xml_path, sim_model_path=sim_model_path)
+        super().__init__(model_path=MODEL_PATH / "xml" / "so101_tabletop_manipulation_generated.xml", sim_model_path=sim_model_path)
         
         # Get sensor index for end-effector position
         self.ee_pos_adr = self.get_sensor_start_index("ee_pos")
@@ -106,7 +124,7 @@ class SO101TabletopManipulation(Task[SO101TabletopManipulationConfig]):
   
         self.reset()
 
-    def _build_scene_with_objects(self) -> str:
+    def _build_scene_with_objects(self, model_path: str) -> str:
         """Builds the scene XML with procedurally placed objects.
         
         Returns:
@@ -123,43 +141,42 @@ class SO101TabletopManipulation(Task[SO101TabletopManipulationConfig]):
             goal_object = self.object_placements[goal_idx]
             self.task_goal = self._generate_goal_for_object(goal_object)
         
-        # Load the base scene specification
-        spec = MjSpec.from_file(XML_PATH)
+        # Read the base XML content
+        base_xml_content = Path(model_path).read_text()
         
-        # Add objects to the scene
+        # Prepare the new objects XML
+        new_objects_xml = []
+        
+        # Add objects
         for i, obj_placement in enumerate(self.object_placements):
-            # Load the object XML
-            obj_spec = MjSpec.from_file(obj_placement.xml_path)
+            x, y, z = obj_placement.position
+            qw, qx, qy, qz = obj_placement.orientation
             
-            # Create a body for the object at the specified position
-            obj_body = spec.worldbody.add_body()
-            obj_body.name = f"{obj_placement.name}_{i}"
-            obj_body.pos = obj_placement.position
-            obj_body.quat = obj_placement.orientation
-            
-            # Add a freejoint for the object (6-DOF)
-            obj_body.add_freejoint()
-            
-            # Attach the object spec to this body
-            obj_body.attach(obj_spec.worldbody.first_body())
+            new_objects_xml.append(f'    <body name="{obj_placement.name}_{i}" pos="{x} {y} {z}" quat="{qw} {qx} {qy} {qz}">')
+            new_objects_xml.append(f'      <freejoint/>')
+            new_objects_xml.append(f'      <include file="{obj_placement.xml_path}"/>')
+            new_objects_xml.append('    </body>')
         
         # Add goal visualization if we have a task goal
         if self.task_goal:
-            goal_body = spec.worldbody.add_body()
-            goal_body.name = "goal_marker"
-            goal_body.pos = self.task_goal.goal_position
-            goal_body.mocap = True
-            
-            goal_geom = goal_body.add_geom()
-            goal_geom.type = 2  # mjGEOM_SPHERE
-            goal_geom.size = [0.02]
-            goal_geom.rgba = [0, 1, 0, 0.3]
-            goal_geom.contype = 0
-            goal_geom.conaffinity = 0
+            gx, gy, gz = self.task_goal.goal_position
+            new_objects_xml.append(f'    <body name="goal_marker" pos="{gx} {gy} {gz}" mocap="true">')
+            new_objects_xml.append('      <geom name="goal_sphere" type="sphere" size="0.02" rgba="0 1 0 0.3" contype="0" conaffinity="0"/>')
+            new_objects_xml.append('    </body>')
         
-        # Save the generated scene to a temporary file
+        # Inject the new objects before the closing </worldbody> tag
+        # We look for the last occurrence of </worldbody>
+        split_token = '</worldbody>'
+        if split_token not in base_xml_content:
+            raise ValueError(f"Could not find {split_token} in {XML_PATH}")
+            
+        parts = base_xml_content.rsplit(split_token, 1)
+        
+        final_xml_content = parts[0] + '\n' + '\n'.join(new_objects_xml) + '\n  ' + split_token + parts[1]
+        
+        # Write to file
         output_path = MODEL_PATH / "xml" / "so101_tabletop_manipulation_generated.xml"
-        spec.to_xml(str(output_path))
+        output_path.write_text(final_xml_content)
         
         return str(output_path)
 

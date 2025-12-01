@@ -1,4 +1,4 @@
-task: so101_reach
+task: so101_tabletop_manipulation
 optimizer: cem
 
 dataflow:

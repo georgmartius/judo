@@ -49,11 +49,12 @@ placements = task.generate_object_arrangement(
 
 ### Configuration
 
-The task can be configured using the `SO101TabletopManipulationConfig` dataclass:
+The task can be configured by passing a config object to the constructor:
 
 ```python
 from judo.tasks import SO101TabletopManipulation, SO101TabletopManipulationConfig
 
+# Create custom configuration
 config = SO101TabletopManipulationConfig(
     w_object_position=2.0,  # Weight for object-to-goal distance
     w_ee_velocity=0.05,  # Weight for end-effector velocity penalty
@@ -64,8 +65,8 @@ config = SO101TabletopManipulationConfig(
     min_object_distance=0.1,  # Minimum distance between objects
 )
 
-task = SO101TabletopManipulation()
-task.config = config
+# Pass config to constructor (important: config is used during scene generation)
+task = SO101TabletopManipulation(config=config)
 ```
 
 ## Object Placement

@@ -29,9 +29,8 @@ def main():
     print(f"   - Table bounds Y: {config.table_bounds_y}")
     print(f"   - Min object distance: {config.min_object_distance}m")
     
-    # Create the task
-    task = SO101TabletopManipulation()
-    task.config = config
+    # Create the task with the custom config
+    task = SO101TabletopManipulation(config=config)
     
     print("\n2. Object placements:")
     for i, placement in enumerate(task.object_placements):
